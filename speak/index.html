@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Valentine's Experience 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Rubik+Doodle+Shadow&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* Retro Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffd1dc url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzhhYWGMYAEYB8RmROaABADeOQ8CXl/xfgAAAABJRU5ErkJggg==');
+            font-family: 'Rubik Doodle Shadow', cursive;
+            overflow-x: hidden;
+            color: #ff0066;
+        }
+
+        /* Retro Navigation */
+        .navbar {
+            background: #ff0066;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px dashed #ff99cc;
+            box-shadow: 0 8px 0 #ff3385;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            color: #ffccd5;
+            text-decoration: none;
+            font-size: 1.8rem;
+            transition: all 0.3s;
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 2px 2px 0 #ff3385;
+        }
+
+        .nav-links a:hover {
+            background: #ff3385;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 0 #ff0066;
+        }
+
+        /* Page Sections */
+        .page-section {
+            display: none;
+            min-height: 100vh;
+            padding: 120px 20px 20px;
+        }
+
+        .active-section {
+            display: block;
+        }
+
+        /* Retro Home Page */
+        #home {
+            text-align: center;
+            position: relative;
+            padding-top: 80px;
+        }
+
+        .hearts-container {
+            position: relative;
+            height: 400px;
+            margin: 2rem 0;
+        }
+
+        .heart {
+            font-size: 120px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(5px 5px 0 #ff3385);
+        }
+
+        #heart-left {
+            left: 10%;
+            animation: heartFloat 3s ease-in-out infinite;
+        }
+
+        #heart-right {
+            right: 10%;
+            animation: heartFloat 3s ease-in-out infinite 0.5s;
+        }
+
+        @keyframes heartFloat {
+            0% { transform: translateY(-50%) rotate(-5deg); }
+            50% { transform: translateY(-55%) rotate(5deg); }
+            100% { transform: translateY(-50%) rotate(-5deg); }
+        }
+
+        .question-text {
+            font-size: 3.5rem;
+            color: #ff0066;
+            margin: 2rem 0;
+            text-shadow: 3px 3px 0 #ff99cc;
+            font-family: 'Bungee', cursive;
+            letter-spacing: 2px;
+        }
+
+        /* Retro Buttons */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .yes-btn, .no-btn {
+            padding: 1.5rem 3rem;
+            font-size: 2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Press Start 2P', cursive;
+            box-shadow: 0 8px 0 #ff3385;
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .yes-btn {
+            background: #ff0066;
+            color: #ffccd5;
+        }
+
+        .yes-btn:hover {
+            background: #ff3385;
+            transform: translateY(3px);
+            box-shadow: 0 5px 0 #ff0066;
+        }
+
+        .no-btn {
+            background: #ff99cc;
+            color: #ff0066;
+            box-shadow: 0 8px 0 #ff6699;
+        }
+
+        .no-btn:hover {
+            background: #ff6699;
+            transform: translateY(3px);
+            box-shadow: 0 5px 0 #ff3385;
+        }
+
+        /* Retro Love Quiz */
+        #quiz {
+            background: #ffe5ec;
+            border-top: 8px dashed #ff0066;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .flashcard {
+            background: #ffccd5;
+            border: 6px groove #ff0066;
+            border-radius: 30px;
+            padding: 2rem;
+            margin: 1.5rem;
+            box-shadow: 8px 8px 0 #ff3385;
+            transform: rotate(-1deg);
+            transition: all 0.3s;
+        }
+
+        .flashcard:hover {
+            transform: rotate(0deg) scale(1.02);
+            box-shadow: 10px 10px 0 #ff0066;
+        }
+
+        .flashcard h3 {
+            color: #ff0066;
+            margin-bottom: 1rem;
+            font-family: 'Bungee', cursive;
+            font-size: 1.8rem;
+        }
+
+        .flashcard input {
+            width: 100%;
+            padding: 1rem;
+            border: 4px dotted #ff0066;
+            border-radius: 15px;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            font-family: 'Rubik Doodle Shadow', cursive;
+            background: #ffe5ec;
+        }
+
+/* Retro Memory Book - Portrait Version */
+.book-container {
+            background: #ffccd5;
+            border: 8px ridge #ff0066;
+            box-shadow: 10px 10px 0 #ff3385;
+            max-width: 600px;
+            margin: 2rem auto;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 20px;
+        }
+
+        .book-page {
+            padding: 30px 20px;
+            background: linear-gradient(145deg, #ff99cc, #ff6699);
+            border: 10px groove #ff0066 !important;
+            min-height: 100%;
+            margin-bottom: 20px;
+        }
+
+        .chapter-title {
+            font-family: 'Bungee', cursive;
+            font-size: 2rem;
+            color: #ff0066;
+            text-shadow: 3px 3px 0 #ff99cc;
+            margin: 0 0 20px 0;
+        }
+
+        .photo-frame {
+            width: 70%;
+            height: 400px;
+            margin: 15px auto;
+            background: #ffccd5;
+            border: 8px ridge #ff0066;
+            box-shadow: 6px 6px 0 #ff3385;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .photo-frame:hover {
+            transform: translateY(-5px);
+        }
+
+        .photo-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(0.2) contrast(1.1);
+        }
+
+        .memory-text {
+            width: 95%;
+            min-height: 150px;
+            margin: 20px auto;
+            padding: 15px;
+            border: 4px dashed #ff0066;
+            background: #ffe5ec;
+            font-family: 'Rubik Doodle Shadow', cursive;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+
+        .book-navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .book-navigation button {
+            background: #ff0066;
+            color: #ffccd5;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Bungee', cursive;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 3px 3px 0 #ff99cc;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 600px) {
+            .book-container {
+                margin: 1rem;
+                max-width: 95%;
+            }
+            
+            .photo-frame {
+                width: 80%;
+                height: 350px;
+            }
+            
+            .chapter-title {
+                font-size: 1.8rem;
+            }
+            
+            .memory-text {
+                width: 90%;
+                font-size: 1rem;
+            }
+        }
+        /* Add this CSS for the score display */
+#scoreDisplay {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ff0066;
+    color: #ffccd5;
+    padding: 15px 25px;
+    border-radius: 15px;
+    font-family: 'Bungee', cursive;
+    box-shadow: 5px 5px 0 #ff99cc;
+    z-index: 100;
+}
+
+#scoreDisplay span {
+    font-size: 1.5em;
+    margin-left: 10px;
+}
+
+.flashcard {
+    background: #ffe5ec;
+    border: 6px ridge #ff0066;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 5px 5px 0 #ff99cc;
+}
+
+.flashcard h3 {
+    color: #ff3385;
+    margin: 0 0 15px 0;
+}
+
+.flashcard input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 3px dashed #ff0066;
+}
+
+.flashcard button {
+    background: #ff3385;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.flashcard button:hover {
+    transform: scale(1.05);
+    background: #ff0066;
+}
+        /* Animations */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="#home" class="nav-item active">Home</a>
+            <a href="#quiz" class="nav-item">Love Quiz</a>
+            <a href="#memories" class="nav-item">Our Memories</a>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="page-section active-section">
+        <div class="hearts-container">
+            <div class="heart" id="heart-left">💖</div>
+            <div class="heart" id="heart-right">💖</div>
+        </div>
+        <h1 class="question-text">Will You Be My Valentine?</h1>
+        <div class="button-container">
+            <button class="yes-btn" onclick="startAnimation()">YES!</button>
+            <button class="no-btn" onmouseover="dodgeButton(this)">NO</button>
+        </div>
+    </section>
+
+    <!-- Love Quiz Section -->
+    <section id="quiz" class="page-section">
+        <div class="quiz-container">
+            <h1>Our Love Quiz 💌</h1>
+            <div id="flashcards"></div>
+        </div>
+    </section>
+
+    <!-- Memory Book Section -->
+    <section id="memories" class="page-section">
+        <div class="book-container" id="memoryBook">
+            <!-- Pages will be generated by JavaScript -->
+        </div>
+        <div class="book-navigation">
+            <button onclick="changePage(-1)" id="prevBtn">← PREV</button>
+            <button onclick="changePage(1)" id="nextBtn">NEXT →</button>
+        </div>
+    </section>
+
+    <script>
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector('.active-section').classList.remove('active-section');
+                document.querySelector(e.target.hash).classList.add('active-section');
+            });
+        });
+
+        // Home Page Animations
+        let animated = false;
+        function startAnimation() {
+            if (animated) return;
+            animated = true;
+
+            const hearts = document.querySelectorAll('.heart');
+            hearts.forEach(heart => {
+                heart.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                heart.style.left = '50%';
+                heart.style.right = 'auto';
+            });
+
+            // Broken hearts effect
+            // for (let i = 0; i < 50; i++) {
+            //     const brokenHeart = document.createElement('div');
+            //     brokenHeart.innerHTML = '💔';
+            //     brokenHeart.className = 'floating-heart';
+            //     brokenHeart.style.left = Math.random() * 100 + '%';
+            //     brokenHeart.style.animationDelay = Math.random() * 3 + 's';
+            //     document.body.appendChild(brokenHeart);
+            // }
+
+            // Hide NO button
+            document.querySelector('.no-btn').style.display = 'none';
+
+            // Romantic message
+            setTimeout(() => {
+                const message = document.createElement('div');
+                message.innerHTML = 'You Make My Heart Whole! 💞';
+                message.style.fontSize = '3rem';
+                message.style.color = '#ff0066';
+                message.style.textAlign = 'center';
+                message.style.marginTop = '2rem';
+                document.querySelector('#home').appendChild(message);
+            }, 2000);
+        }
+
+        // No button dodging
+        let dodgeCount = 0;
+        function dodgeButton(btn) {
+            if(dodgeCount++ > 3) return;
+            btn.style.position = 'absolute';
+            btn.style.left = `${Math.random() * 80 + 10}%`;
+            btn.style.top = `${Math.random() * 80 + 10}%`;
+            btn.style.transition = 'all 0.5s ease-out';
+        }
+
+        // Modified Love Quiz with scoring
+const questions = [
+    { question: "Where was our first date?", answer: "Ice cream shop" },
+    { question: "If we could travel anywhere together right now, where do you think I’d choose?", answer: "Himalaya / North india , mehghalaya " },
+    { question: "Which anime we like in common ?", answer: "Cyber Punk" },
+    { question: "What are our common hobbies ?", answer: "Gym / Trek / Travel" },
+    { question: "Our anniversary month?", answer: "June / September" },
+    { question: "My favorite nickname for you ?", answer: "Prathu / aho " }
+];
+
+let scores = new Array(questions.length).fill(0);
+const flashcards = document.getElementById('flashcards');
+
+// Add score display element
+const scoreDisplay = document.createElement('div');
+scoreDisplay.id = 'scoreDisplay';
+scoreDisplay.innerHTML = 'Love Score: <span id="score">0</span>/' + questions.length;
+document.body.appendChild(scoreDisplay);
+
+questions.forEach((q, index) => {
+    const card = document.createElement('div');
+    card.className = 'flashcard';
+    card.innerHTML = `
+        <h3>Question ${index + 1}</h3>
+        <p>${q.question}</p>
+        <input type="text" placeholder="Your answer...">
+        <button onclick="checkAnswer(this, '${q.answer}', ${index})">Check Answer</button>
+    `;
+    flashcards.appendChild(card);
+});
+
+function checkAnswer(btn, correct, index) {
+    const input = btn.previousElementSibling;
+    const userAnswer = input.value.trim().toLowerCase();
+    const correctAnswer = correct.toLowerCase();
+    
+    // Calculate similarity
+    const fullMatch = userAnswer === correctAnswer;
+    const partialMatch = userAnswer.includes(correctAnswer) || 
+                        correctAnswer.includes(userAnswer) || 
+                        calculateSimilarity(userAnswer, correctAnswer) >= 0.5;
+
+    if (fullMatch) {
+        scores[index] = 1;
+        btn.parentElement.style.background = '#d4edda';
+        btn.textContent = 'Perfect! 💖';
+    } else if (partialMatch) {
+        scores[index] = 0.5;
+        btn.parentElement.style.background = '#fff3cd';
+        btn.textContent = 'Close Enough! 💕';
+    } else {
+        scores[index] = 0;
+        btn.parentElement.style.background = '#f8d7da';
+        btn.textContent = 'Try Again 💔';
+    }
+    
+    updateScoreDisplay();
+}
+
+function calculateSimilarity(a, b) {
+    // Simple similarity calculation
+    const longer = a.length > b.length ? a : b;
+    const shorter = a === longer ? b : a;
+    return longer.includes(shorter) ? shorter.length / longer.length : 0;
+}
+
+function updateScoreDisplay() {
+    const total = scores.reduce((a, b) => a + b, 0);
+    document.getElementById('score').textContent = total.toFixed(1);
+}
+
+    // Memory Book
+const memoryBook = document.getElementById('memoryBook');
+const TOTAL_PAGES = 10;
+let currentPage = 1;
+
+// Chapter titles array
+const chapterTitles = [
+    "Beginning ", "FIRST DATE", "My Sparkle", "Blessed", "GROWING CLOSER", 
+    "ADVENTURES", "CELEBRATIONS", "Our Little World ", "Love is in the Air ", "FOREVER LOVE"
+];
+
+// Corrected photo paths (using forward slashes and fixed typo)
+const photoSources = [
+    "images/where it started.jpeg",  // Use underscores or URL-encode spaces
+    "images/date.jpeg", 
+    "images/fest.jpeg",
+    "images/ganpati.jpeg", 
+    "images/cuties.jpeg",
+    "images/trek.jpeg", 
+    "images/garba.jpeg",
+    "images/diwali.jpeg", 
+    "images/love.jpeg",
+    "images/sux.jpeg"
+];
+
+// Hardcoded memories
+const memoryTexts = [
+    "It all started in FY when I didn’t like you, yet somehow, we ended up together while working on this. And now, I truly feel something about it. ", "Our first date holds a special place in my heart. To you, we weren’t officially together, but to me, you were my whole world. No matter what, this day will always mean everything to me..", 
+    "College is nothing without you—just like how a fest brings sparkle to student life, you bring that same magic to mine.", "With Bappa’s grace, my heart feels lighter and our journey feels even more special. May His blessings always surround us, keeping us together, forever and always. ❤️", 
+    "We've had our ups and downs, sometimes hurting each other, but that's just part of our journey. Every day, we learn, grow, and become better for each other—getting closer with every passing moment. 💫", "Traveling with you is always exciting—not just for the mushy moments but for the time we get to share. More than anything, I want to see the whole world with my whole world. 🌍❤️",
+    "Oh, those Garba nights—dressing up for each other, dancing our hearts out, and sharing a beautiful evening together. In those moments, I feel the happiest, simply grateful to have you by my side. ❤️", "Our favorite festival became even more special because I got to celebrate it with you. Draping a saree just for you filled me with joy (I’m sorry for being late that day!). But what matters most is how we sneak out, make memories, and cherish these moments together—building our own little world of happiness. ❤️", 
+    "I’m in love with the way you look at me—it’s like calm in the middle of a storm. You are the peace to my chaos, and I love you more than words can say. ❤️", "I love being your pillow, and I adore teasing and seducing you. My lord, I want to please you for a lifetime, make love to you endlessly, and build a future—our future—with you. "
+];
+
+function createPage(pageNumber) {
+    const index = pageNumber - 1; // Adjust for array indices
+    const page = document.createElement('div');
+    page.className = 'book-page';
+    page.id = `page-${pageNumber}`;
+    
+    // Create valid filename (replace spaces with %20 for URL encoding)
+    const encodedPath = photoSources[index].replace(/ /g, '%20');
+    
+    page.innerHTML = `
+        <h2 class="chapter-title">CHAPTER ${pageNumber}: ${chapterTitles[index]}</h2>
+        <div class="photo-frame">
+            <img class="photo-preview" 
+                 src="${encodedPath}" 
+                 onerror="this.src='placeholder.jpg'; console.error('Error loading: ${photoSources[index]}')">
+        </div>
+        <textarea class="memory-text" readonly>${memoryTexts[index]}</textarea>
+    `;
+    return page;
+}
+
+// Generate exactly 10 pages
+function initializeBook() {
+    // Clear existing content
+    memoryBook.innerHTML = '';
+    
+    for(let i = 1; i <= TOTAL_PAGES; i++) {
+        memoryBook.appendChild(createPage(i));
+        document.getElementById(`page-${i}`).style.display = i === 1 ? 'block' : 'none';
+    }
+}
+
+// Navigation functions
+function changePage(step) {
+    const newPage = currentPage + step;
+    if(newPage < 1 || newPage > TOTAL_PAGES) return;
+
+    // Hide current page
+    document.getElementById(`page-${currentPage}`).style.display = 'none';
+    
+    // Show new page
+    currentPage = newPage;
+    document.getElementById(`page-${currentPage}`).style.display = 'block';
+    
+    // Update button states
+    document.getElementById('prevBtn').disabled = currentPage === 1;
+    document.getElementById('nextBtn').disabled = currentPage === TOTAL_PAGES;
+}
+
+// Initialize the book
+initializeBook();
+
+// Set initial button states
+document.getElementById('prevBtn').disabled = true;
+
+
+    </script>
+</body>
+</html>
